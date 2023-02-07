@@ -1,14 +1,15 @@
-const mysql = require('mysql');
+const mysql2 = require("mysql2");
 
-const db = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'root',
-  password: 'gottesSegen210705+',
-  database: 'flutter_db',
-})
-db.connect(function (err) {
+const db = mysql2.createPool({
+  host: "localhost",
+  user: "root",
+  password: "gottesSegen210705+",
+  database: "flutter_db",
+  debug: false,
+});
+db.getConnection((err, connection) => {
   if (err) throw err;
-  console.log('DATABASE IS CONNECTED!')
-})
-
+  console.log("🚀  Connected to 🚁🏴‍☠️  database!💣 🏎️  🚀 🏴‍☠️");
+  connection.release();
+});
 module.exports = db;

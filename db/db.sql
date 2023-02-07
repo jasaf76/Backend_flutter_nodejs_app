@@ -1,7 +1,6 @@
 USE flutter_db;
 
-CREATE TABLE
-    users(
+CREATE TABLE users(
         id BIGINT PRIMARY KEY AUTO_INCREMENT,
         email VARCHAR(180) NOT NULL UNIQUE,
         name VARCHAR(90) NOT NULL,
@@ -11,4 +10,97 @@ CREATE TABLE
         password VARCHAR(90) NOT NULL,
         created_at TIMESTAMP(0) NOT NULL,
         updated_at TIMESTAMP(0) NOT NULL
+    );
+
+  USE flutter_db;
+
+CREATE TABLE
+    roles(
+        id BIGINT PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR(90) NOT NULL UNIQUE,
+        image VARCHAR(255) NULL,
+        route VARCHAR(180) NOT NULL,
+        created_at TIMESTAMP(0) NOT NULL,
+        updated_at TIMESTAMP(0) NOT NULL
+    );
+
+INSERT INTO
+    roles(
+        name,
+        route,
+        created_at,
+        updated_at
+    )
+VALUES
+(
+        'RESTAURANT',
+        '/restaurant/orders/list',
+        '2023-02-04',
+        '2023-02-04'
+    );
+
+INSERT INTO
+    roles(
+        name,
+        route,
+        created_at,
+        updated_at
+    )
+VALUES
+(
+        'LIFERANT',
+        '/delivery/orders/list',
+        '2023-02-04',
+        '2023-02-04'
+    );
+
+INSERT INTO
+    roles(
+        name,
+        route,
+        created_at,
+        updated_at
+    )
+VALUES
+(
+        'KLIENT',
+        '/client/products/list',
+        '2023-02-04',
+        '2023-02-04'
+    );
+
+CREATE TABLE
+    user_has_roles(
+        id_user BIGINT NOT NULL,
+        id_rol BIGINT NOT NULL,
+        created_at TIMESTAMP(0) NOT NULL,
+        updated_at TIMESTAMP(0) NOT NULL,
+        FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+        FOREIGN KEY(id_rol) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE,
+        PRIMARY KEY(id_user, id_rol)
+    );  
+
+
+    CREATE TABLE
+    categories(
+        id BIGINT PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR(180) NOT NULL,
+        description TEXT NOT NULL,
+        created_at TIMESTAMP(0) NOT NULL,
+        updated_at TIMESTAMP(0) NOT NULL
+    );
+
+    CREATE TABLE
+    products(
+        id BIGINT PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR(180) NOT NULL UNIQUE,
+        description TEXT NOT NULL,
+        price DECIMAL NOT NULL,
+        image1 VARCHAR(255) NULL,
+        image2 VARCHAR(255) NULL,
+        image3 VARCHAR(255) NULL,
+        id_category BIGINT NOT NULL,
+        created_at TIMESTAMP(0) NOT NULL,
+        updated_at TIMESTAMP(0) NOT NULL,
+        FOREIGN KEY(id_category) REFERENCES categories(id) ON UPDATE CASCADE ON DELETE CASCADE
     );
