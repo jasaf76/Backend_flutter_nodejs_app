@@ -104,3 +104,16 @@ CREATE TABLE
         updated_at TIMESTAMP(0) NOT NULL,
         FOREIGN KEY(id_category) REFERENCES categories(id) ON UPDATE CASCADE ON DELETE CASCADE
     );
+
+    CREATE TABLE
+    address(
+        id BIGINT PRIMARY KEY AUTO_INCREMENT,
+        address VARCHAR(255) NOT NULL,
+        neighborhood VARCHAR(180) NOT NULL,
+        lat DECIMAL NOT NULL,
+        lng DECIMAL NOT NULL,
+        created_at TIMESTAMP(0) NOT NULL,
+        updated_at TIMESTAMP(0) NOT NULL,
+        id_user BIGINT NOT NULL,
+        FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+    );

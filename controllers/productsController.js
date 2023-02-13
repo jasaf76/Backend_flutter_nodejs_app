@@ -3,12 +3,25 @@ const storage = require("../utils/cloud_storage");
 const asyncForEach = require("../utils/async_foreach");
 
 module.exports = {
+  findByCategory(req, res) {
+    const id_category = req.params.id_category;	
+    Product.findByCategory(id_category,(err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al obtener las categorias",
+          error: err,
+        });
+      }
+      return res.status(200).json(data);
+    });
+  },
   create(req, res) {
     const product = JSON.parse(req.body.product); // catch input of client
 
     const files = req.files;
 
-    let inserts = O;
+    let inserts = 0;
 
     if (files.length === 0) {
       return res.status(501).json({
@@ -25,7 +38,7 @@ module.exports = {
             error: err,
           });
         }
-        product.id = `${id_product}`;
+        product.id = id_product;
         const start = async () => {
           await asyncForEach(files, async (file) => {
             const path = `image_${Date.now()}`;

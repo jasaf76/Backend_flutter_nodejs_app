@@ -18,8 +18,8 @@ module.exports = {
       });
     });
   },
-  findAll(req, res) {
-    Category.findAll((err, data) => {
+  getAll(req, res) {
+    Category.getAll((err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
@@ -27,11 +27,7 @@ module.exports = {
           error: err,
         });
       }
-      return res.status(200).json({
-        success: true,
-        message: "Categorias obtenidas",
-        data: data,
-      });
+      return res.status(200).json(data);
     });
   },
   findById(req, res) {
