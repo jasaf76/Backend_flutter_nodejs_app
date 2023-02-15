@@ -6,8 +6,20 @@ const keys = require("../config/keys");
 const storage = require("../utils/cloud_storage");
 
 module.exports = {
-  login(req, res) {
+  findDeliveryMen(req, res) {
+    User.findDeliveryMen((err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Hubo un error con al listar los repartidores",
+          error: err,
+        });
+      }
 
+      return res.status(201).json(data);
+    });
+  },
+  login(req, res) {
     const email = req.body.email;
     const password = req.body.password;
     User.findByEmail(email, async (err, myUser) => {
@@ -25,7 +37,7 @@ module.exports = {
         });
       }
       const isPasswordValid = await bcrypt.compare(password, myUser.password);
-      
+
       if (isPasswordValid) {
         const token = jwt.sign(
           { id: myUser.id, email: myUser.email },
@@ -40,7 +52,7 @@ module.exports = {
           phone: myUser.phone,
           image: myUser.image,
           session_token: `JWT ${token}`,
-          roles: myUser.roles
+          roles: myUser.roles,
         };
         return res.status(201).json({
           success: true,
@@ -150,7 +162,7 @@ module.exports = {
           });
         }
         myData.session_token = user.session_token;
-       // myData.roles = JSON.parse(myData.roles);
+        // myData.roles = JSON.parse(myData.roles);
         return res.status(201).json({
           success: true,
           message: "Klient wurde Erfolgreich aktualisiert",
@@ -181,8 +193,7 @@ module.exports = {
           });
         }
         myData.session_token = user.session_token;
-      // myData.roles = JSON.parse(myData.roles);
-
+        // myData.roles = JSON.parse(myData.roles);
 
         return res.status(201).json({
           success: true,

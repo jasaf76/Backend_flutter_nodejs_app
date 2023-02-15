@@ -16,6 +16,8 @@ const port = process.env.PORT || 3000;
 const usersRoutes = require("./routes/userRoutes");
 const categoriesRoutes = require("./routes/categoryRoutes");
 const productRoutes = require("./routes/productRoutes");
+const addressRoutes = require("./routes/addressRoutes");
+const ordersRoutes = require("./routes/ordersRoutes");
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -41,6 +43,8 @@ const upload = multer({
 usersRoutes(app, upload);
 categoriesRoutes(app);
 productRoutes(app, upload);
+addressRoutes(app);
+ordersRoutes(app);
 
 server.listen(port, "192.168.178.25" || "localhost", function () {
   console.log(
