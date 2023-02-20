@@ -31,7 +31,32 @@ Product.findByCategory = (id_category, result) => {
     }
   );
 };
+Product.findByNameAndCategory = async (id_category,name ) => {
+  const sql = `
+    SELECT
+        CONVERT(P.id, char) AS id,
+        P.name,
+        P.description,
+        P.price,
+        P.image1,
+        P.image2,
+        P.image3,
+        CONVERT(P.id_category, char) AS id_category
+    FROM
+        products as P
+    WHERE 
+        P.id_category = ? AND LOWER(P.name) LIKE ?
+    `;
 
+  try {
+    const rows = await db.query(sql, [id_category, `%${name.toLowerCase()}%`]);
+    console.log("Id de la nuevo producto:", rows);
+    return rows;
+  } catch (err) {
+    console.log("Error:", err);
+    throw err;
+  }
+};
 Product.create = (product, result) => {
   const sql = `
     INSERT INTO
@@ -63,6 +88,34 @@ Product.create = (product, result) => {
     }
   );
 };
+Product.findByNameAndCategory = ( id_category,name, result) => {
+  const sql = `
+    SELECT
+        CONVERT(P.id, char) AS id,
+        P.name,
+        P.description,
+        P.price,
+        P.image1,
+        P.image2,
+        P.image3,
+        CONVERT(P.id_category, char) AS id_category
+    FROM
+        products as P
+    WHERE 
+        P.id_category = ? AND LOWER(P.name) LIKE ?
+    `;
+
+  db.query(sql, [id_category, `%${name.toLowerCase()}%`], (err, res) => {
+    if (err) {
+      console.log("Error:", err);
+      result(err, null);
+    } else {
+      console.log("Id de la nuevo producto:", res);
+      result(null, res);
+    }
+  });
+};
+
 Product.update = (product, result) => {
   const sql = `
     UPDATE

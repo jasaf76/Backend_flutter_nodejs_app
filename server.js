@@ -6,13 +6,20 @@ const logger = require("morgan");
 const cors = require("cors");
 const passport = require("passport"); // Passport for authentication
 const multer = require("multer");
+const io = require("socket.io")(server);
 
-const port = process.env.PORT || 3000;
-
+/*
+ * ROUTES
+ *Importing sockets
+ */
+const ordersSocket = require("./sockets/ordersSocket");
 /*
  * ROUTES
  *Importing routes
  */
+
+const port = process.env.PORT || 3000;
+
 const usersRoutes = require("./routes/userRoutes");
 const categoriesRoutes = require("./routes/categoryRoutes");
 const productRoutes = require("./routes/productRoutes");
@@ -32,6 +39,14 @@ require("./config/passport")(passport);
 app.disable("x-powered-by");
 
 app.set("port", port);
+
+/*
+ * ROUTES
+ *Get sockets
+ */
+
+ ordersSocket(io);
+
 
 const upload = multer({
   storage: multer.memoryStorage(),
